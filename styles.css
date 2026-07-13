@@ -134,7 +134,8 @@ body::before {
   border-radius: 50%;
   background: radial-gradient(closest-side, #ffffff, rgba(255,255,255,0.4) 55%, transparent);
   filter: blur(2px);
-  animation: bulbPulse 5.5s ease-in-out infinite;
+  animation: bulbOn 1s ease-out both,
+             bulbPulse 5.5s ease-in-out 1s infinite;
 }
 /* volumetric beam cone */
 .lamp-beam {
@@ -151,7 +152,8 @@ body::before {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
   filter: blur(6px);
-  animation: beamFlicker 5.5s ease-in-out infinite;
+  animation: beamOn 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both,
+             beamFlicker 5.5s ease-in-out 1.65s infinite;
   transform-origin: 50% 0;
 }
 /* soft pool of light where the beam lands */
@@ -162,7 +164,8 @@ body::before {
   background: radial-gradient(ellipse at center,
     rgba(255,255,255,0.6), rgba(255,255,255,0) 70%);
   filter: blur(12px);
-  animation: bulbPulse 5.5s ease-in-out infinite;
+  animation: poolOn 1.3s ease-out 0.6s both,
+             bulbPulse 5.5s ease-in-out 1.9s infinite;
 }
 @keyframes beamFlicker {
   0%, 100% { opacity: 0.95; transform: translateX(-50%) scaleX(1); }
@@ -172,6 +175,25 @@ body::before {
 @keyframes bulbPulse {
   0%, 100% { opacity: 0.8; }
   40%      { opacity: 1; }
+}
+/* power-on sequence — the lamp flickers to life on page load */
+@keyframes bulbOn {
+  0%   { opacity: 0; }
+  12%  { opacity: 0.7; }
+  16%  { opacity: 0.05; }
+  24%  { opacity: 0.85; }
+  30%  { opacity: 0.2; }
+  45%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+@keyframes beamOn {
+  0%   { opacity: 0; transform: translateX(-50%) scaleY(0.04); }
+  45%  { opacity: 0.55; }
+  100% { opacity: 1; transform: translateX(-50%) scaleY(1); }
+}
+@keyframes poolOn {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0.6); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
 .grain {
