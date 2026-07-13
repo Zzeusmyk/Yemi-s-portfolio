@@ -109,6 +109,15 @@ body::before {
   z-index: 0;
   pointer-events: none;
 }
+/* faint shade framing the beam so the light reads with more contrast */
+.ceiling::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(70% 60% at 50% 8%, transparent 42%, rgba(18,18,18,0.09) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 96%);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent 96%);
+}
 /* cord dropping from the top edge */
 .lamp-cord {
   position: absolute; top: 0; left: 50%;
@@ -135,7 +144,7 @@ body::before {
   background: radial-gradient(closest-side, #ffffff, rgba(255,255,255,0.4) 55%, transparent);
   filter: blur(2px);
   animation: bulbOn 1s ease-out both,
-             bulbPulse 5.5s ease-in-out 1s infinite;
+             lampFlicker 3.4s steps(1, end) 1s infinite;
 }
 /* volumetric beam cone */
 .lamp-beam {
@@ -144,16 +153,17 @@ body::before {
   transform: translateX(-50%);
   background: linear-gradient(to bottom,
     rgba(255,255,255,1) 0%,
-    rgba(255,255,255,0.85) 22%,
-    rgba(255,255,255,0.5) 55%,
-    rgba(255,255,255,0.12) 82%,
+    rgba(255,255,255,1) 30%,
+    rgba(255,255,255,0.9) 55%,
+    rgba(255,255,255,0.6) 78%,
+    rgba(255,255,255,0.25) 92%,
     rgba(255,255,255,0) 100%);
   clip-path: polygon(45.5% 0, 54.5% 0, 100% 100%, 0% 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
-  filter: blur(6px);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  filter: blur(5px);
   animation: beamOn 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both,
-             beamFlicker 5.5s ease-in-out 1.65s infinite;
+             lampFlicker 3.4s steps(1, end) 1.65s infinite;
   transform-origin: 50% 0;
 }
 /* soft pool of light where the beam lands */
@@ -162,19 +172,29 @@ body::before {
   width: min(1000px, 92vw); height: 300px;
   transform: translateX(-50%);
   background: radial-gradient(ellipse at center,
-    rgba(255,255,255,0.6), rgba(255,255,255,0) 70%);
+    rgba(255,255,255,0.85), rgba(255,255,255,0) 72%);
   filter: blur(12px);
   animation: poolOn 1.3s ease-out 0.6s both,
-             bulbPulse 5.5s ease-in-out 1.9s infinite;
+             lampFlicker 3.4s steps(1, end) 1.9s infinite;
 }
-@keyframes beamFlicker {
-  0%, 100% { opacity: 0.95; transform: translateX(-50%) scaleX(1); }
-  35%      { opacity: 1;    transform: translateX(-50%) scaleX(1.03); }
-  62%      { opacity: 0.97; transform: translateX(-50%) scaleX(0.99); }
-}
-@keyframes bulbPulse {
-  0%, 100% { opacity: 0.8; }
-  40%      { opacity: 1; }
+/* constant, lively electrical flicker (hard cuts via steps) */
+@keyframes lampFlicker {
+  0%   { opacity: 1; }
+  3%   { opacity: 0.42; }
+  6%   { opacity: 1; }
+  9%   { opacity: 0.72; }
+  12%  { opacity: 1; }
+  31%  { opacity: 1; }
+  34%  { opacity: 0.55; }
+  37%  { opacity: 1; }
+  50%  { opacity: 0.85; }
+  53%  { opacity: 1; }
+  70%  { opacity: 1; }
+  73%  { opacity: 0.32; }
+  76%  { opacity: 1; }
+  89%  { opacity: 0.78; }
+  92%  { opacity: 1; }
+  100% { opacity: 1; }
 }
 /* power-on sequence — the lamp flickers to life on page load */
 @keyframes bulbOn {
