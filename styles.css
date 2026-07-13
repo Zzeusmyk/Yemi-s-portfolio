@@ -43,6 +43,21 @@ body {
 }
 
 /* ───────── Ambient background ───────── */
+/* slow shifting base wash */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 55% at 20% 15%, rgba(255,255,255,0.7), transparent 60%),
+    radial-gradient(55% 50% at 85% 80%, rgba(210,210,206,0.5), transparent 60%);
+  background-size: 180% 180%;
+  animation: bgShift 26s ease-in-out infinite alternate;
+}
+@keyframes bgShift {
+  0%   { background-position: 0% 0%,   100% 100%; }
+  100% { background-position: 40% 30%, 60% 70%;   }
+}
+
 .orb {
   position: fixed;
   border-radius: 50%;
@@ -50,21 +65,128 @@ body {
   z-index: 0;
   pointer-events: none;
   opacity: 0.6;
+  will-change: transform;
 }
 .orb-1 {
   width: 46vw; height: 46vw;
   top: -12vw; right: -10vw;
   background: radial-gradient(circle at 30% 30%, #ffffff, rgba(255,255,255,0));
+  animation: drift1 24s ease-in-out infinite alternate;
 }
 .orb-2 {
   width: 40vw; height: 40vw;
   bottom: -14vw; left: -10vw;
   background: radial-gradient(circle at 60% 40%, #d9d9d6, rgba(217,217,214,0));
+  animation: drift2 30s ease-in-out infinite alternate;
 }
+.orb-3 {
+  width: 34vw; height: 34vw;
+  top: 42%; left: 46%;
+  opacity: 0.45;
+  background: radial-gradient(circle at 50% 50%, #ffffff, rgba(255,255,255,0));
+  animation: drift3 34s ease-in-out infinite alternate;
+}
+@keyframes drift1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-7vw, 6vw) scale(1.12); }
+}
+@keyframes drift2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(8vw, -5vw) scale(1.15); }
+}
+@keyframes drift3 {
+  0%   { transform: translate(-50%, -50%) scale(0.9); }
+  50%  { transform: translate(-38%, -60%) scale(1.1); }
+  100% { transform: translate(-60%, -42%) scale(0.95); }
+}
+
+/* overhead lamp casting an animated beam onto the page */
+.ceiling {
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: min(1160px, 100vw);
+  height: min(96vh, 940px);
+  z-index: 0;
+  pointer-events: none;
+}
+/* cord dropping from the top edge */
+.lamp-cord {
+  position: absolute; top: 0; left: 50%;
+  width: 2px; height: 78px;
+  transform: translateX(-50%);
+  background: linear-gradient(#0a0a0a, #333);
+}
+/* the pendant shade (bell / dome) */
+.lamp-shade {
+  position: absolute; top: 70px; left: 50%;
+  width: 96px; height: 74px;
+  transform: translateX(-50%);
+  background: linear-gradient(160deg, #2a2a2a 0%, #0c0c0c 60%, #000 100%);
+  border-radius: 52% 52% 44% 44% / 88% 88% 26% 26%;
+  box-shadow: 0 8px 24px rgba(10,10,10,0.28);
+}
+/* glowing bulb at the shade's mouth */
+.lamp-shade::after {
+  content: "";
+  position: absolute; left: 50%; bottom: -6px;
+  width: 60px; height: 20px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #ffffff, rgba(255,255,255,0.4) 55%, transparent);
+  filter: blur(2px);
+  animation: bulbPulse 5.5s ease-in-out infinite;
+}
+/* volumetric beam cone */
+.lamp-beam {
+  position: absolute; top: 138px; left: 50%;
+  width: min(1040px, 96vw); height: min(82vh, 780px);
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.85) 22%,
+    rgba(255,255,255,0.5) 55%,
+    rgba(255,255,255,0.12) 82%,
+    rgba(255,255,255,0) 100%);
+  clip-path: polygon(45.5% 0, 54.5% 0, 100% 100%, 0% 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  filter: blur(6px);
+  animation: beamFlicker 5.5s ease-in-out infinite;
+  transform-origin: 50% 0;
+}
+/* soft pool of light where the beam lands */
+.lamp-pool {
+  position: absolute; left: 50%; top: min(76vh, 720px);
+  width: min(1000px, 92vw); height: 300px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center,
+    rgba(255,255,255,0.6), rgba(255,255,255,0) 70%);
+  filter: blur(12px);
+  animation: bulbPulse 5.5s ease-in-out infinite;
+}
+@keyframes beamFlicker {
+  0%, 100% { opacity: 0.95; transform: translateX(-50%) scaleX(1); }
+  35%      { opacity: 1;    transform: translateX(-50%) scaleX(1.03); }
+  62%      { opacity: 0.97; transform: translateX(-50%) scaleX(0.99); }
+}
+@keyframes bulbPulse {
+  0%, 100% { opacity: 0.8; }
+  40%      { opacity: 1; }
+}
+
 .grain {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
   opacity: 0.04; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 8s steps(6) infinite;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-4%, 3%); }
+  40%  { transform: translate(3%, -3%); }
+  60%  { transform: translate(-3%, -2%); }
+  80%  { transform: translate(2%, 4%); }
+  100% { transform: translate(0, 0); }
 }
 
 /* ───────── Liquid glass button ───────── */
@@ -385,6 +507,9 @@ main { position: relative; z-index: 2; }
   align-items: center;
 }
 .about-portrait {
+  position: relative;
+}
+.portrait-frame {
   aspect-ratio: 3 / 4;
   border-radius: 26px;
   background: linear-gradient(160deg, #f2f2f0, #dcdcd9);
@@ -392,7 +517,7 @@ main { position: relative; z-index: 2; }
   box-shadow: 0 30px 70px rgba(10,10,10,0.22);
   border: 1px solid var(--line);
 }
-.about-portrait img {
+.portrait-frame img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
@@ -400,7 +525,52 @@ main { position: relative; z-index: 2; }
   filter: grayscale(100%) contrast(1.02);
   transition: transform 0.9s var(--ease);
 }
-.about-portrait:hover img { transform: scale(1.03); }
+.about-portrait:hover .portrait-frame img { transform: scale(1.03); }
+
+/* spinning circular-text badge */
+.spin-badge {
+  position: absolute;
+  right: -26px; bottom: -26px;
+  width: clamp(116px, 13vw, 148px);
+  height: clamp(116px, 13vw, 148px);
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: 0 14px 34px rgba(10,10,10,0.22),
+              inset 0 1px 1px rgba(255,255,255,0.7),
+              inset 0 -6px 12px rgba(255,255,255,0.25);
+  z-index: 3;
+}
+.spin-badge__text {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  animation: badgeSpin 18s linear infinite;
+}
+.spin-badge__text text {
+  fill: var(--ink);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+.spin-badge__mark {
+  display: grid; place-items: center;
+  width: 42%; height: 42%;
+  border-radius: 50%;
+  border: 1px solid rgba(10,10,10,0.15);
+  background: rgba(255,255,255,0.35);
+  color: var(--ink);
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  line-height: 1;
+}
+.spin-badge:hover .spin-badge__text { animation-duration: 6s; }
+@keyframes badgeSpin { to { transform: rotate(360deg); } }
 .about-copy h2 { margin-bottom: 1.4rem; }
 .about-copy p { color: var(--ink-soft); margin-bottom: 1.1rem; max-width: 52ch; }
 .about-copy .glass-btn { margin-top: 1rem; }
@@ -599,6 +769,9 @@ main { position: relative; z-index: 2; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .marquee-track { animation: none; }
+  .spin-badge__text { animation: none; }
+  .orb, body::before, .grain,
+  .lamp-beam, .lamp-pool, .lamp-shade::after { animation: none; }
   html { scroll-behavior: auto; }
 }
 
