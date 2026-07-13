@@ -107,8 +107,13 @@
     // Paste your Formspree endpoint here to send real emails, e.g.
     //   var ENDPOINT = "https://formspree.io/f/xxxxxxx";
     // Leave it empty ("") to use the mailto fallback instead.
-    var ENDPOINT = "";
+    //
+    // Currently wired to FormSubmit.co (no signup). Every submission is
+    // emailed to FALLBACK_EMAIL. IMPORTANT: the very first submission
+    // triggers a one-time activation email to that inbox — click the link
+    // in it once to start receiving messages.
     var FALLBACK_EMAIL = "yemicharis@gmail.com";
+    var ENDPOINT = "https://formsubmit.co/ajax/" + FALLBACK_EMAIL;
     // ──────────────────────────────────────────────────────────
 
     var status = document.getElementById("formStatus");
@@ -215,15 +220,26 @@
         return;
       }
 
-      // Endpoint configured → send via fetch (Formspree-compatible).
+      // Endpoint configured → send via fetch (FormSubmit / Formspree compatible).
       submitBtn.classList.add("loading");
       submitBtn.disabled = true;
       status.textContent = "Sending…";
 
+      var payload = {
+        name: data.name,
+        email: data.email,
+        topic: data.topic,
+        message: data.message,
+        // FormSubmit control fields (ignored by other services)
+        _subject: "New project enquiry — " + data.topic,
+        _template: "table",
+        _captcha: "false"
+      };
+
       fetch(ENDPOINT, {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
       })
         .then(function (res) {
           if (res.ok) { showSuccess(); status.textContent = ""; }
