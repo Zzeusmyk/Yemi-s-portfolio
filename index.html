@@ -179,8 +179,8 @@
 
     <!-- ───────── ABOUT ───────── -->
     <section class="section about" id="about">
-      <div class="about-portrait reveal" aria-hidden="true">
-        <div class="portrait-inner"><span>YEMI</span></div>
+      <div class="about-portrait reveal">
+        <img src="1782924249216.png" alt="Yemi — content creator and social media manager" loading="lazy" />
       </div>
       <div class="about-copy reveal">
         <p class="eyebrow">About</p>
@@ -204,23 +204,75 @@
     <!-- ───────── CONTACT ───────── -->
     <section class="section contact" id="contact">
       <div class="contact-card reveal">
-        <p class="eyebrow">Contact</p>
-        <h2>Let's build something<br /><span class="serif">worth following.</span></h2>
-        <p class="contact-sub">
-          Got a brand to grow or a story to tell? I'm currently taking on a few new
-          projects. Tell me what you're working on.
-        </p>
-        <div class="contact-cta">
-          <a href="mailto:hello@yemi.studio" class="glass-btn">
-            <span>hello@yemi.studio</span>
-            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-        <div class="socials">
-          <a href="#" aria-label="Instagram">Instagram</a>
-          <a href="#" aria-label="TikTok">TikTok</a>
-          <a href="#" aria-label="LinkedIn">LinkedIn</a>
-          <a href="#" aria-label="X">X / Twitter</a>
+        <div class="contact-grid">
+          <!-- left: info -->
+          <div class="contact-info">
+            <p class="eyebrow">Contact</p>
+            <h2>Let's build something<br /><span class="serif">worth following.</span></h2>
+            <p class="contact-sub">
+              Got a brand to grow or a story to tell? I'm currently taking on a few new
+              projects. Tell me what you're working on and I'll get back within 48 hours.
+            </p>
+            <a href="mailto:yemicharis@gmail.com" class="contact-email">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.5"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              yemicharis@gmail.com
+            </a>
+            <div class="socials">
+              <a href="#" aria-label="Instagram">Instagram</a>
+              <a href="#" aria-label="TikTok">TikTok</a>
+              <a href="#" aria-label="LinkedIn">LinkedIn</a>
+              <a href="#" aria-label="X">X / Twitter</a>
+            </div>
+          </div>
+
+          <!-- right: form -->
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="field">
+              <label for="cf-name">Name</label>
+              <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="Your name" required />
+              <span class="field-error" data-for="cf-name"></span>
+            </div>
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" autocomplete="email" placeholder="you@email.com" required />
+              <span class="field-error" data-for="cf-email"></span>
+            </div>
+            <div class="field">
+              <label for="cf-topic">What do you need?</label>
+              <div class="select-wrap">
+                <select id="cf-topic" name="topic">
+                  <option value="Content creation">Content creation</option>
+                  <option value="Social media management">Social media management</option>
+                  <option value="Strategy & brand voice">Strategy &amp; brand voice</option>
+                  <option value="Growth & analytics">Growth &amp; analytics</option>
+                  <option value="Video Editing">Video &amp; Editing</option>
+                  <option value="Something else">Something else</option>
+                </select>
+                <svg viewBox="0 0 24 24" fill="none" class="select-caret"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="field">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" rows="4" placeholder="Tell me about your brand and goals…" required></textarea>
+              <span class="field-error" data-for="cf-message"></span>
+            </div>
+            <!-- honeypot (spam trap) -->
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <button type="submit" class="glass-btn form-submit">
+              <span class="submit-label">Send message</span>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+
+            <!-- success overlay -->
+            <div class="form-success" id="formSuccess" hidden>
+              <svg viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <h3>Message sent</h3>
+              <p>Thanks — I've got it. You'll hear back from me within 48 hours.</p>
+              <button type="button" class="glass-btn glass-btn--sm" id="formReset"><span>Send another</span></button>
+            </div>
+          </form>
         </div>
       </div>
     </section>
