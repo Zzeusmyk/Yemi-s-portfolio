@@ -114,6 +114,8 @@
     // in it once to start receiving messages.
     var FALLBACK_EMAIL = "yemicharis@gmail.com";
     var ENDPOINT = "https://formsubmit.co/ajax/" + FALLBACK_EMAIL;
+    // Where to send visitors after a successful submission:
+    var REDIRECT_URL = "thanks.html";
     // ──────────────────────────────────────────────────────────
 
     var status = document.getElementById("formStatus");
@@ -233,7 +235,9 @@
         // FormSubmit control fields (ignored by other services)
         _subject: "New project enquiry — " + data.topic,
         _template: "table",
-        _captcha: "false"
+        _captcha: "false",
+        // fallback redirect if the request ever runs as a normal POST
+        _next: new URL(REDIRECT_URL, window.location.href).href
       };
 
       fetch(ENDPOINT, {
@@ -242,8 +246,10 @@
         body: JSON.stringify(payload)
       })
         .then(function (res) {
-          if (res.ok) { showSuccess(); status.textContent = ""; }
-          else { throw new Error("Bad response"); }
+          if (res.ok) {
+            status.textContent = "Sent — redirecting…";
+            window.location.href = REDIRECT_URL;
+          } else { throw new Error("Bad response"); }
         })
         .catch(function () {
           status.textContent =
